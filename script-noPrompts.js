@@ -13,53 +13,41 @@ const digits = ['0','1','2','3','4','5','6','7','8','9',];
 // Special characters list from https://owasp.org/www-community/password-special-characters
 const specialCharacters = ['\u0020','\u0021','\u0022','\u0023','\u0024','\u0025','\u0026','\u0027','\u0029','\u002A','\u002B','\u002C','\u002D','\u002E','\u002F','\u003A','\u003B','\u003C','\u003D','\u003E','\u003F','\u0040','\u005B','\u005C','\u005D','\u005E','\u005F','\u0060','\u007B','\u007C','\u007D','\u007E'];
 
-const lenMessage = "How long should the password be?\nType a number between 1 and 128.";
-const lenError = "\nOnly type a number between 1 and 128.";
-const prefMessage = "Should the password contain\n";
-const confirmMessage = "\nClick OK for 'yes' or Cancel for 'no'.";
-const errorMessage = "**Make sure to include at least one type of character!**";
 
-// Generate a prompt to get the preferred length.
-function declareLength () {
-  
-  let len = Number(prompt(lenMessage,"8"));
-  console.log(len);
+const lowercase = document.getElementById('lowercase');
+const uppercase = document.getElementById('uppercase');
+const numbers = document.getElementById('numbers');
+const special = document.getElementById('special');
 
-  // Ensuring that the length the type we want.
-  while (len < 1 || len > 128 || isNaN(len)) {
-    len = Number(prompt(lenMessage+lenError,"8"));
-  }
-  return len;
-}
+const preferences = [true,true,true,true];
+lowercase.addEventListener('change', function(){preferences[0] = this.checked});
+uppercase.addEventListener('change', function(){preferences[1] = this.checked});
+numbers.addEventListener('change', function(){preferences[2] = this.checked});
+special.addEventListener('change', function(){preferences[3] = this.checked});
 
-// Generate prompts to get preferences of which types of characters.
-function declarePreferences() {
-  const preferences = [
-    confirm(prefMessage+'lowercase letters (abc)?'+confirmMessage),
-    confirm(prefMessage+'uppercase letters (ABC)?'+confirmMessage),
-    confirm(prefMessage+'numbers (123)?'+confirmMessage),
-    confirm(prefMessage+'special characters (!#$)?'+confirmMessage)
-  ];
 
-  // Check that any characters were selected.
-  // Otherwise run the function again.
-  if (sum(preferences) == 0){
-    alert(errorMessage);
-    return declarePreferences();
-  } else {
-    return preferences;
-  }
-};
+
+
 
 function generatePassword() {
-  const len = declareLength();
-  const preferences = declarePreferences();
+  const len = Math.floor(2**document.getElementById('length').value);
+  // The length of the password is defined so that the slider has a logarithmic scale, for ease of use.
 
-  return generatePasswordInclusive(len,preferences);
-};
+  // Check that the user's preferences include any characters at all.
+  if (sum(preferences) == 0) {
+    
+    lowercase.checked = true;
+  // This doesn't show the box as checked???
+    preferences[0]=true;
+    if (!isError()) {
+      errorMessage();
+    };
+  } else if (isError()) {
+    removeError();
+  };
+  
 
 
-function generatePasswordNonInclusive(len,preferences) {
   let characterList = [];
 
   if (preferences[0]) {characterList =characterList.concat(lowercaseLetters)};
@@ -68,19 +56,37 @@ function generatePasswordNonInclusive(len,preferences) {
   if (preferences[3]) {characterList =characterList.concat(specialCharacters)};
 
   return addCharacters("",len,characterList);
+ 
+
+
 }
 
 // This function would return a password that includes at least one of every type of character.
-function generatePasswordInclusive(len,preferences) { 
+function generatePasswordInclusive() {
+
+  // The length of the password is defined so that the slider has a logarithmic scale, for ease of use.
+  const len = Math.floor(2**document.getElementById('length').value);
+  
   // If the desired length is very small, and it would be impossible to include one of every type of character.
   if (sum(preferences) > len) {
-    return generatePasswordNonInclusive();
+    return generatePassword();
   };
 
 
   // Check that the user's preferences include any characters at all.
   if (sum(preferences) == 0) {
     
+    // Make lowercase checked so that a password can be output.
+    lowercase.checked = true;
+    preferences[0]=true;
+
+    // Include an error message by the checkboxes, if there isn't one there already.
+    if (!isError()) {
+      errorMessage();
+    };
+  // If there is still an error message from a previous generated password, remove it.
+  } else if (isError()) {
+    removeError();
   };
 
   // Generating a list of allowed characters.
@@ -106,8 +112,10 @@ function generatePasswordInclusive(len,preferences) {
   };
 
   return addCharacters(password,len,characterList);
-
+ 
+  
 };
+
 
 
 function addCharacters(password,len,characterList){
@@ -126,12 +134,41 @@ function addCharacters(password,len,characterList){
 
 // Write password to the #password input
 function writePassword() {
-  let password = generatePassword();
+  let password = generatePasswordInclusive();
   let passwordText = document.querySelector("#password");
   passwordText.textContent=password;
 
   // Erase any added error messages.
 }
+
+function errorMessage() {
+  // If no checkboxes are checked,
+  // 1. Check lowercase letters, so a valid password can be generated.
+  // 2. Add a red note to the user to remember to check at least one of the boxes.
+ 
+  let errorMess = document.createElement("span");
+  errorMess.setAttribute("id","error");
+  errorMess.textContent = "**Check at least one of the boxes so your password has options for characters.**"
+  errorMess.style.color = "red";
+  let form = document.getElementById('form');
+  form.insertBefore(errorMess,form.children[4]);
+}
+
+function isError() {
+  // Detects if the error message is present.
+  const form = document.getElementById('form');
+  return (form.children[4].id == "error");
+};
+
+function removeError() {
+  // Remove the error message when a new password is generated.
+  // Must run the function isError() beforehand.
+  
+  const form = document.getElementById('form');
+  form.children[4].remove();
+};
+
+
 
 function randomItem(arr) {
   const i=Math.floor(arr.length * Math.random());

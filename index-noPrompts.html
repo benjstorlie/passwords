@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Password Generator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Password Generator</h1>
+        <a class="noPromptsLink" href="./index.html">
+          Go to Password Generator with pop up dialog prompts.
+        </a>
+      </header>
+      <div class="card">
+        <div class="card-header">
+          <h2>Generate a Password</h2>
+        </div>
+        <div class="card-body">
+          <textarea
+            readonly
+            id="password"
+            placeholder="Your Secure Password"
+            aria-label="Generated Password"
+          ></textarea>
+        </div>
+        <div class="card-footer">
+          <button id="generate" class="btn">Generate Password</button>
+        </div>
+        <div class="selections">
+          <form id="form">
+            <label for="length">Length: <span id="rangeValue">8</span> characters</label><br>
+            <input type="range" class="slider" id="length"
+              name="length" min="0" max="7" value="3" step="0.1"
+              oninput="rangeValue.innerText=Math.floor(2**this.value)">
+<!-- Since the we want the length to range from 1 to 128, but the user probably wants a password less than 20 characters, the slider is on a logarithmic scale.  So the actual range of the slider is 0 to 7, and the actual length is 2 raised to the power of the slider value. -->
+
+            <br><br>
+            <input type="checkbox" id="lowercase" name="lowercase" checked="true">
+            <label for="lowercase">Lowercase (abc)</label><br>
+            <input type="checkbox" id="uppercase" name="uppercase" checked="true">
+            <label for="uppercase">Uppercase (ABC)</label><br>
+            <input type="checkbox" id="numbers" name="numbers" checked="true">
+            <label for="numbers">Numbers (123)</label><br>
+            <input type="checkbox" id="special" name="special" checked="true">
+            <label for="special">Special Characters (!#$)</label><br>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="script-noPrompts.js"></script>
+  </body>
+</html>

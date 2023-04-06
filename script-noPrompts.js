@@ -30,6 +30,8 @@ special.addEventListener('change', function(){preferences[3] = this.checked});
 
 
 function generatePassword() {
+  // This function is not inclusive, so it is not guaranteed to contain every type of character selected by the user.
+
   const len = Math.floor(2**document.getElementById('length').value);
   // The length of the password is defined so that the slider has a logarithmic scale, for ease of use.
 
@@ -37,7 +39,6 @@ function generatePassword() {
   if (sum(preferences) == 0) {
     
     lowercase.checked = true;
-  // This doesn't show the box as checked???
     preferences[0]=true;
     if (!isError()) {
       errorMessage();
@@ -61,13 +62,15 @@ function generatePassword() {
 
 }
 
-// This function would return a password that includes at least one of every type of character.
+
 function generatePasswordInclusive() {
+  // This function would return a password that includes at least one of every type of character.
 
   // The length of the password is defined so that the slider has a logarithmic scale, for ease of use.
   const len = Math.floor(2**document.getElementById('length').value);
   
   // If the desired length is very small, and it would be impossible to include one of every type of character.
+  // Since the minimum password length is 8, this isn't an option anyway, but could be useful in the future.
   if (sum(preferences) > len) {
     return generatePassword();
   };

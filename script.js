@@ -14,7 +14,7 @@ const digits = ['0','1','2','3','4','5','6','7','8','9',];
 const specialCharacters = ['\u0020','\u0021','\u0022','\u0023','\u0024','\u0025','\u0026','\u0027','\u0029','\u002A','\u002B','\u002C','\u002D','\u002E','\u002F','\u003A','\u003B','\u003C','\u003D','\u003E','\u003F','\u0040','\u005B','\u005C','\u005D','\u005E','\u005F','\u0060','\u007B','\u007C','\u007D','\u007E'];
 
 const lenMessage = "How long should the password be?\nType a number between 1 and 128.";
-const lenError = "\nOnly type a number between 1 and 128.";
+const lenError = "\nOnly type a number between 8 and 128.";
 const prefMessage = "Should the password contain\n";
 const confirmMessage = "\nClick OK for 'yes' or Cancel for 'no'.";
 const errorMessage = "**Make sure to include at least one type of character!**";
@@ -26,7 +26,7 @@ function declareLength () {
   console.log(len);
 
   // Ensuring that the length the type we want.
-  while (len < 1 || len > 128 || isNaN(len)) {
+  while (len < 8 || len > 128 || isNaN(len)) {
     len = Number(prompt(lenMessage+lenError,"8"));
   }
   return len;
@@ -52,6 +52,7 @@ function declarePreferences() {
 };
 
 function generatePassword() {
+
   const len = declareLength();
   const preferences = declarePreferences();
 
@@ -60,6 +61,8 @@ function generatePassword() {
 
 
 function generatePasswordNonInclusive(len,preferences) {
+  // This function is not inclusive, so it is not guaranteed to contain every type of character selected by the user.
+
   let characterList = [];
 
   if (preferences[0]) {characterList =characterList.concat(lowercaseLetters)};
@@ -70,9 +73,11 @@ function generatePasswordNonInclusive(len,preferences) {
   return addCharacters("",len,characterList);
 }
 
-// This function would return a password that includes at least one of every type of character.
+
 function generatePasswordInclusive(len,preferences) { 
+  // This function would return a password that includes at least one of every type of character.
   // If the desired length is very small, and it would be impossible to include one of every type of character.
+  // Since the minimum password length is 8, this isn't an option anyway, but could be useful in the future.
   if (sum(preferences) > len) {
     return generatePasswordNonInclusive();
   };

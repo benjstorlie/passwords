@@ -184,7 +184,7 @@ function sum(booleanArray) {
   let i = 0;
 
   for (x in booleanArray) {
-    if (x) { i++}
+    if (booleanArray[x]) { i++}
   };
 
   return i;

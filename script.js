@@ -34,13 +34,15 @@ function declareLength () {
 
 // Generate prompts to get preferences of which types of characters.
 function declarePreferences() {
-  const preferences = [
+  let preferences = [
     confirm(prefMessage+'lowercase letters (abc)?'+confirmMessage),
     confirm(prefMessage+'uppercase letters (ABC)?'+confirmMessage),
     confirm(prefMessage+'numbers (123)?'+confirmMessage),
     confirm(prefMessage+'special characters (!#$)?'+confirmMessage)
   ];
 
+  console.log(preferences);
+  console.log(sum(preferences));
   // Check that any characters were selected.
   // Otherwise run the function again.
   if (sum(preferences) == 0){
@@ -53,8 +55,8 @@ function declarePreferences() {
 
 function generatePassword() {
 
-  const len = declareLength();
-  const preferences = declarePreferences();
+  let len = declareLength();
+  let preferences = declarePreferences();
 
   return generatePasswordInclusive(len,preferences);
 };
@@ -80,12 +82,6 @@ function generatePasswordInclusive(len,preferences) {
   // Since the minimum password length is 8, this isn't an option anyway, but could be useful in the future.
   if (sum(preferences) > len) {
     return generatePasswordNonInclusive();
-  };
-
-
-  // Check that the user's preferences include any characters at all.
-  if (sum(preferences) == 0) {
-    
   };
 
   // Generating a list of allowed characters.
@@ -117,7 +113,7 @@ function generatePasswordInclusive(len,preferences) {
 
 function addCharacters(password,len,characterList){
   // Might should add some checks here. Checking how long password is, that the arguments are the right type, etc.
-  const character = randomItem(characterList);
+  let character = randomItem(characterList);
   if (password.length < len) {
     
     return addCharacters(password+character,len,characterList);
@@ -134,8 +130,6 @@ function writePassword() {
   let password = generatePassword();
   let passwordText = document.querySelector("#password");
   passwordText.textContent=password;
-
-  // Erase any added error messages.
 }
 
 function randomItem(arr) {
@@ -149,7 +143,7 @@ function sum(booleanArray) {
   let i = 0;
 
   for (x in booleanArray) {
-    if (x) { i++}
+    if (booleanArray[x]) { i++}
   };
 
   return i;

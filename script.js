@@ -22,12 +22,12 @@ const errorMessage = "**Make sure to include at least one type of character!**";
 // Generate a prompt to get the preferred length.
 function declareLength () {
   
-  let len = Number(prompt(lenMessage,"8"));
+  let len = Number(prompt(lenMessage,"16"));
   console.log(len);
 
   // Ensuring that the length the type we want.
   while (len < 8 || len > 128 || isNaN(len)) {
-    len = Number(prompt(lenMessage+lenError,"8"));
+    len = Number(prompt(lenMessage+lenError,"16"));
   }
   return len;
 }

@@ -4,6 +4,10 @@
 
 This web app creates randomly generated passwords based on user input.
 
+## How to use
+
+The website can be accessed at (benjstorlie.github.io/passwords)[https://benjstorlie.github.io/passwords/].  Press the big red "Generate Password" button to generate a password, and it will display in the central box.  Copy it to your favorite password manager.
+
 ## User Story
 
 ```
@@ -57,6 +61,10 @@ I also included error messages.  The user is then immediately prompted to input 
     I suppose one way of making the second function from the first would be to check to see if it happened to make an inclusive password and, if not, generate another.
 
     I made the inclusive password generator by making the first few characters be of each selected character type, then randomly filling out the rest. After that, it shuffles and returns the result.
+    
+3. I wanted the length slider to be logarithmic (in the [no pop-ups version](https://benjstorlie.github.io/passwords/index-noPrompts.html)).  Since the length can vary from 8 to 128, but the user probably wants something less than 20, I wanted it to be easier to change to a particular length when the length is shorter.  That makes it so that the steps on the slider do not correspond to integer values anymore.  I set the `step` to `0.01`, since $/log_2 (128) - /log_2 (127) /approx 0.01$ and that would be the shortest difference, and then every possible integer length should be accessible.  However, it did not quite work when I tried it on my browser.  I have not yet tried it in too many browsers or changed the slider length too much at all.  There would have to be at least 400 pixels ($(7-3)/0.01$) available.  I did not want it to look too large, and I also suppose that someone is not going to care about the precise password length when it is that long.
+
+4. In the future, I would like to change the display of the outputted password to color-code the types of characters.  This would make it easier for the user to distinguish `1` and `l` or `0` and `O`.  Since Space (U+0020) was included as a possible special character, I'd want it to display in a special way, especially if it is at the start or end of the password, or if there are more than one.  Honestly, I did not expect that Space was allowed, for that reason.
 
 ## Credits
 

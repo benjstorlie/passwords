@@ -6,7 +6,7 @@ This web app creates randomly generated passwords based on user input.
 
 ## How to use
 
-The website can be accessed at (benjstorlie.github.io/passwords)[https://benjstorlie.github.io/passwords/].  Press the big red "Generate Password" button to generate a password, and it will display in the central box.  Copy it to your favorite password manager.
+The website can be accessed at [benjstorlie.github.io/passwords](https://benjstorlie.github.io/passwords/).  Press the big red "Generate Password" button to generate a password, and it will display in the central box.  Copy it to your favorite password manager.
 
 ## User Story
 

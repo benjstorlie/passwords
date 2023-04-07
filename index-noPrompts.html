@@ -34,7 +34,7 @@
           <form id="form">
             <label for="length">Length: <span id="rangeValue">16</span> characters</label><br>
             <input type="range" class="slider" id="length"
-              name="length" min="3" max="7" value="4" step="0.1"
+              name="length" min="3" max="7" value="4" step="0.01"
               oninput="rangeValue.innerText=Math.floor(2**this.value)">
 <!-- Since the we want the length to range from 8 to 128, but the user probably wants a password less than 20 characters, the slider is on a logarithmic scale.  So the actual range of the slider is 0 to 7, and the actual length is 2 raised to the power of the slider value. -->
 
